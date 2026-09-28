@@ -109,7 +109,6 @@ nav.scrolled{background:var(--nav-bg);backdrop-filter:blur(22px);-webkit-backdro
 .dark-toggle.off { background: linear-gradient(135deg,#fce7f3,#e9d5ff); }
 .dark-toggle.on { background: linear-gradient(135deg,#4c1d95,#7c3aed); }
 
-/* --- PERUBAHAN ADA DI BAGIAN INI --- */
 .dark-toggle::before {
   position: absolute;
   top: 50%;
@@ -119,20 +118,19 @@ nav.scrolled{background:var(--nav-bg);backdrop-filter:blur(22px);-webkit-backdro
   transition: opacity .3s;
 }
 
-/* Light mode: Ikon Matahari di kanan (karena bulatan ada di kiri) */
+/* Light mode: sun icon on the right (knob sits on the left) */
 .dark-toggle.off::before {
   content: '☀️';
   right: 5px;
   left: auto;
 }
 
-/* Dark mode: Ikon Bulan di kiri (karena bulatan pindah ke kanan) */
+/* Dark mode: moon icon on the left (knob moves to the right) */
 .dark-toggle.on::before {
   content: '🌙';
   left: 5px;
   right: auto;
 }
-/* ---------------------------------- */
 
 .dark-toggle::after {
   content: '';
@@ -256,222 +254,39 @@ h1.ht{font-family:'Playfair Display',serif;font-size:clamp(2.6rem,5vw,4.4rem);li
 .counter-icon{font-size:1.6rem;margin-bottom:.5rem;display:block}
 
 /* ══════════════════════════════════
-   SKILLS — logo icon grid + tooltip popup
+   SKILLS — alternating auto-scroll marquee rows
 ══════════════════════════════════ */
-/* ════ BUBBLE LAYOUT ════ */
-.skill-bubble-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.2rem;
-  justify-content: center;
-  align-items: center;
-  margin-top: 1.5rem;
-  padding: 0 1rem;
+.skills-marquee-wrap{display:flex;flex-direction:column;gap:1.7rem;margin-top:1.5rem}
+.skill-row-label{font-size:.7rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--text3);text-align:center;margin-bottom:.7rem;opacity:.85}
+.skill-marquee{position:relative;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.skill-track{display:flex;gap:1rem;width:max-content;animation:marqueeL 30s linear infinite}
+.skill-marquee.rev .skill-track{animation-name:marqueeR}
+.skill-marquee:hover .skill-track{animation-play-state:paused}
+@keyframes marqueeL{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes marqueeR{from{transform:translateX(-50%)}to{transform:translateX(0)}}
+
+.skill-pill{flex:0 0 auto;display:flex;align-items:center;gap:.7rem;padding:.65rem 1.15rem;border-radius:14px;background:var(--card);border:1px solid var(--border);box-shadow:0 2px 10px rgba(196,181,253,.12);cursor:default;transition:transform .3s,border-color .3s,box-shadow .3s}
+.skill-pill:hover{transform:translateY(-3px);border-color:var(--pk3);box-shadow:0 8px 22px rgba(196,181,253,.25)}
+.sp-icon{width:34px;height:34px;border-radius:10px;background:rgba(196,181,253,.14);display:flex;align-items:center;justify-content:center;font-size:1.15rem;flex-shrink:0;overflow:hidden}
+.sp-icon img{width:20px;height:20px;object-fit:contain}
+.dark .sp-icon{background:rgba(139,92,246,.16)}
+.sp-body{display:flex;flex-direction:column;gap:.3rem;min-width:88px}
+.sp-name{font-size:.76rem;font-weight:700;color:var(--text1);white-space:nowrap}
+.sp-bar{width:100%;height:3px;border-radius:2px;background:rgba(196,181,253,.2);overflow:hidden}
+.sp-fill{display:block;height:100%;border-radius:2px;background:linear-gradient(90deg,var(--pk),var(--lv))}
+.dark .sp-bar{background:rgba(139,92,246,.2)}
+
+@media (max-width:768px){
+  .skill-pill{padding:.52rem .9rem;gap:.55rem}
+  .sp-icon{width:28px;height:28px;font-size:1rem}
+  .sp-icon img{width:16px;height:16px}
+  .sp-name{font-size:.7rem}
+  .sp-body{min-width:72px}
+  .skill-track{animation-duration:22s}
 }
-
-.skill-logo-item {
-  position: relative;
-  flex: 0 0 auto;
-}
-
-.skill-logo-btn {
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
-  border: 2px solid rgba(196, 181, 253, 0.3);
-  background: rgba(255, 255, 255, 0.7);
-  font-size: 2rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(196, 181, 253, 0.15);
-  animation: float 3s ease-in-out infinite;
-  padding: 0;
-}
-
-.skill-logo-btn img {
-  width: 48px;
-  height: 48px;
-  object-fit: contain;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
-}
-
-/* Floating animation */
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-12px);
-  }
-}
-
-/* Delay untuk setiap bubble */
-.skill-logo-item:nth-child(1) .skill-logo-btn { animation-delay: 0s; }
-.skill-logo-item:nth-child(2) .skill-logo-btn { animation-delay: 0.2s; }
-.skill-logo-item:nth-child(3) .skill-logo-btn { animation-delay: 0.4s; }
-.skill-logo-item:nth-child(4) .skill-logo-btn { animation-delay: 0.6s; }
-.skill-logo-item:nth-child(5) .skill-logo-btn { animation-delay: 0.8s; }
-.skill-logo-item:nth-child(6) .skill-logo-btn { animation-delay: 1s; }
-.skill-logo-item:nth-child(7) .skill-logo-btn { animation-delay: 1.2s; }
-.skill-logo-item:nth-child(8) .skill-logo-btn { animation-delay: 1.4s; }
-
-.skill-logo-btn:hover {
-  transform: scale(1.1) translateY(0px);
-  border-color: rgba(196, 181, 253, 0.6);
-  box-shadow: 0 6px 20px rgba(196, 181, 253, 0.3);
-  background: rgba(255, 255, 255, 0.95);
-  animation-play-state: paused;
-}
-
-.dark .skill-logo-btn {
-  background: rgba(139, 92, 246, 0.1);
-  border-color: rgba(139, 92, 246, 0.3);
-  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.15);
-}
-
-.dark .skill-logo-btn:hover {
-  background: rgba(139, 92, 246, 0.2);
-  border-color: rgba(139, 92, 246, 0.6);
-  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.3);
-  animation-play-state: paused;
-}
-
-/* ════ TOOLTIP ════ */
-.skill-tooltip {
-  position: absolute;
-  bottom: 85px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(0, 0, 0, 0.9);
-  color: #fff;
-  padding: 0.75rem 1rem;
-  border-radius: 8px;
-  font-size: 0.8rem;
-  white-space: nowrap;
-  pointer-events: none;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.3s ease;
-  z-index: 10;
-}
-
-.skill-tooltip::after {
-  content: '';
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  border: 6px solid transparent;
-  border-top-color: rgba(0, 0, 0, 0.9);
-}
-
-.skill-logo-item:hover .skill-tooltip {
-  opacity: 1;
-  visibility: visible;
-  bottom: 90px;
-}
-
-.dark .skill-tooltip {
-  background: rgba(30, 30, 30, 0.95);
-}
-
-.dark .skill-tooltip::after {
-  border-top-color: rgba(30, 30, 30, 0.95);
-}
-
-.st-name {
-  display: block;
-  font-weight: 600;
-  margin-bottom: 0.3rem;
-}
-
-.st-level {
-  display: block;
-  font-size: 0.75rem;
-  color: #aaa;
-  margin-bottom: 0.4rem;
-}
-
-.st-bar {
-  width: 100px;
-  height: 4px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 2px;
-  overflow: hidden;
-}
-
-.st-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #8b5cf6, #ec4899);
-  border-radius: 2px;
-  transition: width 0.3s;
-}
-
-/* ════ SECTION STYLING ════ */
-.skills-logo-section {
-  margin-bottom: 3rem;
-}
-
-.skills-logo-section h3 {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: var(--text1);
-  margin-bottom: 0.5rem;
-  text-align: center;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  opacity: 0.8;
-}
-
-.dark .skills-logo-section h3 {
-  color: #e0e0e0;
-}
-
-/* ════ RESPONSIVE ════ */
-@media (max-width: 768px) {
-  .skill-bubble-grid {
-    gap: 1rem;
-  }
-
-  .skill-logo-btn {
-    width: 60px;
-    height: 60px;
-    font-size: 1.5rem;
-  }
-
-  .skill-tooltip {
-    font-size: 0.75rem;
-    padding: 0.6rem 0.8rem;
-  }
-
-  .st-bar {
-    width: 80px;
-  }
-}
-
-@media (max-width: 480px) {
-  .skill-bubble-grid {
-    gap: 0.8rem;
-  }
-
-  .skill-logo-btn {
-    width: 55px;
-    height: 55px;
-    font-size: 1.3rem;
-  }
-
-  .skill-tooltip {
-    bottom: 80px;
-    font-size: 0.7rem;
-    padding: 0.5rem 0.7rem;
-  }
-
-  .skill-logo-item:hover .skill-tooltip {
-    bottom: 85px;
-  }
+@media (prefers-reduced-motion:reduce){
+  .skill-track{animation:none}
+  .skill-marquee{overflow-x:auto}
 }
 
 /* ══════════════════════════════════
@@ -482,11 +297,10 @@ h1.ht{font-family:'Playfair Display',serif;font-size:clamp(2.6rem,5vw,4.4rem);li
 .f-tab{padding:.48rem 1.25rem;border-radius:50px;font-size:.78rem;font-weight:700;border:1.5px solid var(--border);background:transparent;color:var(--text2);transition:all .3s}
 .f-tab.active,.f-tab:hover{background:linear-gradient(135deg,var(--pk),var(--lv));color:#fff;border-color:transparent;box-shadow:0 4px 18px rgba(232,121,166,.3)}
 .proj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.35rem;transition:all .35s}
-.proj-card{border-radius:22px;overflow:hidden;background:var(--card);border:1px solid var(--border);transition:transform .5s cubic-bezier(.16,1,.3,1),opacity .5s,box-shadow .4s}
+.proj-card{border-radius:22px;overflow:hidden;background:var(--card);border:1px solid var(--border);transition:transform .6s cubic-bezier(.16,1,.3,1),opacity .6s cubic-bezier(.16,1,.3,1),box-shadow .4s}
 .proj-card:hover{transform:translateY(-10px);box-shadow:0 28px 64px rgba(196,181,253,.22)}
 .proj-card.hidden{display:none}
-.proj-card.fade-out{opacity:0;transform:scale(.94) translateY(10px)}
-.proj-card.fade-in{opacity:1;transform:translateY(0)}
+.proj-card.pre-anim{opacity:0;transform:translateY(32px)}
 .proj-thumb{height: 180px;display:flex;align-items:center;justify-content:center;font-size:3.3rem;position:relative;overflow:hidden}
 .proj-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:.75rem;opacity:0;background:linear-gradient(135deg,rgba(109,40,217,.87),rgba(192,38,211,.8));transition:all .35s}
 .proj-card:hover .proj-overlay{opacity:1}
@@ -568,10 +382,20 @@ h1.ht{font-family:'Playfair Display',serif;font-size:clamp(2.6rem,5vw,4.4rem);li
    RECENT ACTIVITIES
 ══════════════════════════════════ */
 #testimonials{background:var(--surface)}
-.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.3rem}
-.testi-card{background:var(--bg);border-radius:24px;padding:0;border:1px solid var(--border);transition:all .35s;position:relative;overflow:hidden}
+.testi-carousel-wrap{position:relative}
+.testi-grid{display:flex;gap:1.3rem;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;padding:.4rem .2rem 1.3rem;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.testi-grid::-webkit-scrollbar{display:none}
+.testi-card{flex:0 0 auto;width:340px;scroll-snap-align:start;background:var(--bg);border-radius:24px;padding:0;border:1px solid var(--border);transition:transform .35s,box-shadow .35s;position:relative;overflow:hidden}
 .dark .testi-card{background:var(--card)}
 .testi-card:hover{transform:translateY(-6px);box-shadow:0 18px 46px rgba(196,181,253,.18)}
+.testi-nav{position:absolute;top:calc(50% - 1.3rem);width:44px;height:44px;border-radius:50%;border:1.5px solid var(--border);background:var(--card);color:var(--pk);font-size:1.1rem;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(196,181,253,.28);z-index:5;transition:all .25s;cursor:none}
+.testi-nav:hover{background:linear-gradient(135deg,var(--pk),var(--lv));color:#fff;border-color:transparent;transform:translateY(-2px)}
+.testi-nav.prev{left:-1.4rem}
+.testi-nav.next{right:-1.4rem}
+.testi-nav[disabled]{opacity:.35;pointer-events:none}
+.testi-dots{display:flex;justify-content:center;gap:.4rem;margin-top:.5rem}
+.testi-dot{width:7px;height:7px;border-radius:50%;background:var(--border);transition:all .3s;cursor:none}
+.testi-dot.active{width:22px;border-radius:5px;background:linear-gradient(90deg,var(--pk),var(--lv))}
 .act-thumb{height:160px;position:relative;border-radius:24px 24px 0 0;overflow:hidden}
 .act-thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .45s cubic-bezier(.16,1,.3,1)}
 .testi-card:hover .act-thumb img{transform:scale(1.06)}
@@ -678,7 +502,10 @@ footer{background:#0a0514;padding:3.5rem 4rem}
   .nav-links{display:none}.ham{display:flex}
   .theme-toggle-wrap .theme-toggle-label{display:none}
   .section-inner{padding:5rem 1.8rem}
-  .hero-layout,.about-grid,.contact-grid,.testi-grid,.certs-grid{grid-template-columns:1fr}
+  .hero-layout,.about-grid,.contact-grid,.certs-grid{grid-template-columns:1fr}
+  .testi-card{width:280px}
+  .testi-nav.prev{left:.3rem}
+  .testi-nav.next{right:.3rem}
   .proj-grid{grid-template-columns:1fr 1fr}
   .profile-wrap{width:230px;height:230px}
   .fb3,.fb4{display:none}
@@ -696,7 +523,7 @@ footer{background:#0a0514;padding:3.5rem 4rem}
   .detail-docs{grid-template-columns:1fr}
 }
 @media(max-width:600px){
-  .proj-grid,.testi-grid,.certs-grid{grid-template-columns:1fr}
+  .proj-grid,.certs-grid{grid-template-columns:1fr}
   h1.ht{font-size:2.4rem}.counter-val{font-size:2.2rem}
   #chat-panel{left:1rem;right:1rem;width:auto}
 }
@@ -827,6 +654,8 @@ footer{background:#0a0514;padding:3.5rem 4rem}
 
         <div class="hero-ctas">
           <a href="#projects" class="btn-p">View My Work ✦</a>
+          <a href="https://drive.google.com/file/d/1i9UrmLv2k8OoLAOuoeVyAFC-aSAcVQv3/view?usp=sharing" target="_blank" class="btn-s" onclick="showToast('Opening CV on Google Drive…','#e879a6')">📄 Download CV ↗</a>
+          <a href="https://drive.google.com/file/d/1J0gu4wYxR8lS3YuGLrt-Y09L-8KvtS8Y/view?usp=sharing" target="_blank" class="btn-s" onclick="showToast('Opening Portfolio (PPT)…','#8b5cf6')">📊 View Portfolio (PPT) ↗</a>
           <a href="#contact" class="btn-s">Let's Connect →</a>
           <a href="https://www.linkedin.com/in/cutkheysa" target="_blank" class="btn-s">LinkedIn ↗</a>
         </div>
@@ -835,14 +664,7 @@ footer{background:#0a0514;padding:3.5rem 4rem}
         <div class="profile-wrap">
           <div class="profile-glow"></div>
           <div class="ring1"></div><div class="ring2"></div>
-          <!--
-            ═══════════════════════════════════════════════════
-            FOTO HERO (lingkaran besar di kanan)
-            Ganti nilai src di bawah dengan path/URL foto kamu.
-            Contoh lokal : src="foto-kheysa.jpg"
-            Contoh online: src="https://i.imgur.com/xxx.jpg"
-            ═══════════════════════════════════════════════════
-          -->
+          <!-- Hero photo (large circle, right side) -->
           <div class="profile-circle">
             <img
               src="1776671899635.jpg"
@@ -867,15 +689,7 @@ footer{background:#0a0514;padding:3.5rem 4rem}
 
 <!-- ════ ABOUT ════ -->
 <section id="about">
-  <!--
-    ═══════════════════════════════════════════════════════════
-    FOTO BACKGROUND ABOUT ME (tampil transparan di belakang)
-    Ganti src di bawah dengan path/URL foto kamu.
-    Opacity sudah diatur 0.08 agar terlihat halus & elegan.
-    Contoh lokal : src="foto-kheysa-bg.jpg"
-    Contoh online: src="https://i.imgur.com/xxx.jpg"
-    ═══════════════════════════════════════════════════════════
-  -->
+  <!-- Faint background photo behind the About section -->
   <img
     src="20251209_225100299.jpeg"
     alt=""
@@ -887,17 +701,10 @@ footer{background:#0a0514;padding:3.5rem 4rem}
     <div class="about-grid">
       <div class="reveal">
         <div class="about-card">
-          <!--
-            ═══════════════════════════════════════════════════
-            FOTO AVATAR (kotak kecil di sudut atas card About)
-            Ganti src di bawah dengan path/URL foto kamu.
-            Contoh lokal : src="foto-kheysa-avatar.jpg"
-            Contoh online: src="https://i.imgur.com/xxx.jpg"
-            ═══════════════════════════════════════════════════
-          -->
+          <!-- Small avatar photo in the top corner of the About card -->
           <div class="about-avatar" style="overflow:hidden">
             <img
-              src="FOTO_AVATAR_ABOUT.jpg"
+              src="1776671899635.jpg"
               alt="Cut Kheysa Sakbania"
               style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:18px;display:block"
               onerror="this.style.display='none';this.parentElement.style.fontSize='2.1rem';this.insertAdjacentText('afterend','👩‍🔬')"
@@ -947,78 +754,28 @@ footer{background:#0a0514;padding:3.5rem 4rem}
   </div>
 </div>
 
-<!-- ════ SKILLS — logo icon grid with hover tooltip ════ -->
-<!-- ════ SKILLS — logo icon grid dengan bubble layout ════ -->
+<!-- ════ SKILLS — alternating auto-scroll marquee ════ -->
 <section id="skills">
   <div class="section-inner">
     <div class="reveal" style="text-align:center">
       <div class="section-tag">Expertise</div>
       <h2 class="section-title">Skills & <span class="g">Technologies</span></h2>
-      <p class="section-sub" style="max-width:540px;margin:0 auto 3.5rem">Hover over any technology to see my proficiency level. Each icon represents a tool I actively use in real projects.</p>
+      <p class="section-sub" style="max-width:540px;margin:0 auto 1rem">A snapshot of the tools and technologies I actively use across AI, robotics, and web engineering.</p>
     </div>
-
-    <!-- AI & Computer Vision -->
-    <div class="skills-logo-section reveal">
-      <h3>AI & Computer Vision</h3>
-      <div class="skill-bubble-grid">
-        <div class="skill-logo-item"><button class="skill-logo-btn"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" alt="Python"></button><div class="skill-tooltip"><span class="st-name">Python</span><span class="st-level">Advanced</span><div class="st-bar"><div class="st-fill" style="width:90%"></div></div></div></div>
-        <div class="skill-logo-item"><button class="skill-logo-btn"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/opencv/opencv-original.svg" alt="OpenCV"></button><div class="skill-tooltip"><span class="st-name">OpenCV</span><span class="st-level">Advanced</span><div class="st-bar"><div class="st-fill" style="width:88%"></div></div></div></div>
-        <div class="skill-logo-item"><button class="skill-logo-btn"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Yolo_logo.png/320px-Yolo_logo.png" alt="YOLO"></button><div class="skill-tooltip"><span class="st-name">YOLO</span><span class="st-level">Advanced</span><div class="st-bar"><div class="st-fill" style="width:87%"></div></div></div></div>
-        <div class="skill-logo-item"><button class="skill-logo-btn"><img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/pytorch.svg" alt="RT-DETR"></button><div class="skill-tooltip"><span class="st-name">RT-DETR</span><span class="st-level">Intermediate</span><div class="st-bar"><div class="st-fill" style="width:78%"></div></div></div></div>
-        <div class="skill-logo-item"><button class="skill-logo-btn"><img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/googlemediapipe.svg" alt="MediaPipe"></button><div class="skill-tooltip"><span class="st-name">MediaPipe</span><span class="st-level">Intermediate</span><div class="st-bar"><div class="st-fill" style="width:78%"></div></div></div></div>
-        <div class="skill-logo-item"><button class="skill-logo-btn"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/scikitlearn/scikitlearn-original.svg" alt="Machine Learning"></button><div class="skill-tooltip"><span class="st-name">Machine Learning</span><span class="st-level">Intermediate</span><div class="st-bar"><div class="st-fill" style="width:80%"></div></div></div></div>
+    <div class="skills-marquee-wrap reveal">
+      <div class="skill-row">
+        <div class="skill-row-label">Core Stack</div>
+        <div class="skill-marquee">
+          <div class="skill-track" style="animation-duration:34s"><div class="skill-pill"><span class="sp-icon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" alt="Python"></span><span class="sp-body"><span class="sp-name">Python</span><span class="sp-bar"><span class="sp-fill" style="width:90%"></span></span></span></div><div class="skill-pill"><span class="sp-icon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/opencv/opencv-original.svg" alt="OpenCV"></span><span class="sp-body"><span class="sp-name">OpenCV</span><span class="sp-bar"><span class="sp-fill" style="width:88%"></span></span></span></div><div class="skill-pill"><span class="sp-icon"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Yolo_logo.png/320px-Yolo_logo.png" alt="YOLO"></span><span class="sp-body"><span class="sp-name">YOLO</span><span class="sp-bar"><span class="sp-fill" style="width:87%"></span></span></span></div><div class="skill-pill"><span class="sp-icon">🦙</span><span class="sp-body"><span class="sp-name">LLaMA 3.2</span><span class="sp-bar"><span class="sp-fill" style="width:85%"></span></span></span></div><div class="skill-pill"><span class="sp-icon">🔗</span><span class="sp-body"><span class="sp-name">NLP Pipelines</span><span class="sp-bar"><span class="sp-fill" style="width:85%"></span></span></span></div><div class="skill-pill"><span class="sp-icon">⚡</span><span class="sp-body"><span class="sp-name">FastAPI</span><span class="sp-bar"><span class="sp-fill" style="width:85%"></span></span></span></div><div class="skill-pill"><span class="sp-icon">📡</span><span class="sp-body"><span class="sp-name">ESP32</span><span class="sp-bar"><span class="sp-fill" style="width:72%"></span></span></span></div><div class="skill-pill"><span class="sp-icon">🇮🇩</span><span class="sp-body"><span class="sp-name">Bahasa Indonesia</span><span class="sp-bar"><span class="sp-fill" style="width:100%"></span></span></span></div><div class="skill-pill"><span class="sp-icon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" alt="Python"></span><span class="sp-body"><span class="sp-name">Python</span><span class="sp-bar"><span class="sp-fill" style="width:90%"></span></span></span></div><div class="skill-pill"><span class="sp-icon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/opencv/opencv-original.svg" alt="OpenCV"></span><span class="sp-body"><span class="sp-name">OpenCV</span><span class="sp-bar"><span class="sp-fill" style="width:88%"></span></span></span></div><div class="skill-pill"><span class="sp-icon"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Yolo_logo.png/320px-Yolo_logo.png" alt="YOLO"></span><span class="sp-body"><span class="sp-name">YOLO</span><span class="sp-bar"><span class="sp-fill" style="width:87%"></span></span></span></div><div class="skill-pill"><span class="sp-icon">🦙</span><span class="sp-body"><span class="sp-name">LLaMA 3.2</span><span class="sp-bar"><span class="sp-fill" style="width:85%"></span></span></span></div><div class="skill-pill"><span class="sp-icon">🔗</span><span class="sp-body"><span class="sp-name">NLP Pipelines</span><span class="sp-bar"><span class="sp-fill" style="width:85%"></span></span></span></div><div class="skill-pill"><span class="sp-icon">⚡</span><span class="sp-body"><span class="sp-name">FastAPI</span><span class="sp-bar"><span class="sp-fill" style="width:85%"></span></span></span></div><div class="skill-pill"><span class="sp-icon">📡</span><span class="sp-body"><span class="sp-name">ESP32</span><span class="sp-bar"><span class="sp-fill" style="width:72%"></span></span></span></div><div class="skill-pill"><span class="sp-icon">🇮🇩</span><span class="sp-body"><span class="sp-name">Bahasa Indonesia</span><span class="sp-bar"><span class="sp-fill" style="width:100%"></span></span></span></div></div>
+        </div>
+      </div>
+      <div class="skill-row">
+        <div class="skill-row-label">Tools & Frameworks</div>
+        <div class="skill-marquee rev">
+          <div class="skill-track" style="animation-duration:34s"><div class="skill-pill"><span class="sp-icon">🌶️</span><span class="sp-body"><span class="sp-name">Flask</span><span class="sp-bar"><span class="sp-fill" style="width:83%"></span></span></span></div><div class="skill-pill"><span class="sp-icon">▲</span><span class="sp-body"><span class="sp-name">Next.js</span><span class="sp-bar"><span class="sp-fill" style="width:70%"></span></span></span></div><div class="skill-pill"><span class="sp-icon">⚛️</span><span class="sp-body"><span class="sp-name">React</span><span class="sp-bar"><span class="sp-fill" style="width:60%"></span></span></span></div><div class="skill-pill"><span class="sp-icon">🐙</span><span class="sp-body"><span class="sp-name">GitHub</span><span class="sp-bar"><span class="sp-fill" style="width:78%"></span></span></span></div><div class="skill-pill"><span class="sp-icon">💻</span><span class="sp-body"><span class="sp-name">VS Code</span><span class="sp-bar"><span class="sp-fill" style="width:92%"></span></span></span></div><div class="skill-pill"><span class="sp-icon">📋</span><span class="sp-body"><span class="sp-name">Notion</span><span class="sp-bar"><span class="sp-fill" style="width:90%"></span></span></span></div><div class="skill-pill"><span class="sp-icon">🤖</span><span class="sp-body"><span class="sp-name">Qwen 2.5</span><span class="sp-bar"><span class="sp-fill" style="width:82%"></span></span></span></div><div class="skill-pill"><span class="sp-icon">🇬🇧</span><span class="sp-body"><span class="sp-name">English</span><span class="sp-bar"><span class="sp-fill" style="width:70%"></span></span></span></div><div class="skill-pill"><span class="sp-icon">🌶️</span><span class="sp-body"><span class="sp-name">Flask</span><span class="sp-bar"><span class="sp-fill" style="width:83%"></span></span></span></div><div class="skill-pill"><span class="sp-icon">▲</span><span class="sp-body"><span class="sp-name">Next.js</span><span class="sp-bar"><span class="sp-fill" style="width:70%"></span></span></span></div><div class="skill-pill"><span class="sp-icon">⚛️</span><span class="sp-body"><span class="sp-name">React</span><span class="sp-bar"><span class="sp-fill" style="width:60%"></span></span></span></div><div class="skill-pill"><span class="sp-icon">🐙</span><span class="sp-body"><span class="sp-name">GitHub</span><span class="sp-bar"><span class="sp-fill" style="width:78%"></span></span></span></div><div class="skill-pill"><span class="sp-icon">💻</span><span class="sp-body"><span class="sp-name">VS Code</span><span class="sp-bar"><span class="sp-fill" style="width:92%"></span></span></span></div><div class="skill-pill"><span class="sp-icon">📋</span><span class="sp-body"><span class="sp-name">Notion</span><span class="sp-bar"><span class="sp-fill" style="width:90%"></span></span></span></div><div class="skill-pill"><span class="sp-icon">🤖</span><span class="sp-body"><span class="sp-name">Qwen 2.5</span><span class="sp-bar"><span class="sp-fill" style="width:82%"></span></span></span></div><div class="skill-pill"><span class="sp-icon">🇬🇧</span><span class="sp-body"><span class="sp-name">English</span><span class="sp-bar"><span class="sp-fill" style="width:70%"></span></span></span></div></div>
+        </div>
       </div>
     </div>
-
-    <!-- NLP & LLMs -->
-    <div class="skills-logo-section reveal d1">
-      <h3>NLP & LLM Engineering</h3>
-      <div class="skill-bubble-grid">
-        <div class="skill-logo-item"><button class="skill-logo-btn">🦙</button><div class="skill-tooltip"><span class="st-name">LLaMA 3.2</span><span class="st-level">Advanced</span><div class="st-bar"><div class="st-fill" style="width:85%"></div></div></div></div>
-        <div class="skill-logo-item"><button class="skill-logo-btn">🤖</button><div class="skill-tooltip"><span class="st-name">Qwen 2.5</span><span class="st-level">Advanced</span><div class="st-bar"><div class="st-fill" style="width:82%"></div></div></div></div>
-        <div class="skill-logo-item"><button class="skill-logo-btn">🔗</button><div class="skill-tooltip"><span class="st-name">NLP Pipelines</span><span class="st-level">Advanced</span><div class="st-bar"><div class="st-fill" style="width:85%"></div></div></div></div>
-        <div class="skill-logo-item"><button class="skill-logo-btn">📝</button><div class="skill-tooltip"><span class="st-name">Data Retrieval & Summarisation</span><span class="st-level">Advanced</span><div class="st-bar"><div class="st-fill" style="width:83%"></div></div></div></div>
-        <div class="skill-logo-item"><button class="skill-logo-btn">✅</button><div class="skill-tooltip"><span class="st-name">JSON Output & Validation</span><span class="st-level">Intermediate</span><div class="st-bar"><div class="st-fill" style="width:78%"></div></div></div></div>
-      </div>
-    </div>
-
-    <!-- Backend & APIs -->
-    <div class="skills-logo-section reveal d2">
-      <h3>Backend & APIs</h3>
-      <div class="skill-bubble-grid">
-        <div class="skill-logo-item"><button class="skill-logo-btn">⚡</button><div class="skill-tooltip"><span class="st-name">FastAPI</span><span class="st-level">Advanced</span><div class="st-bar"><div class="st-fill" style="width:85%"></div></div></div></div>
-        <div class="skill-logo-item"><button class="skill-logo-btn">🌶️</button><div class="skill-tooltip"><span class="st-name">Flask</span><span class="st-level">Advanced</span><div class="st-bar"><div class="st-fill" style="width:83%"></div></div></div></div>
-        <div class="skill-logo-item"><button class="skill-logo-btn">🗄️</button><div class="skill-tooltip"><span class="st-name">MySQL</span><span class="st-level">Intermediate</span><div class="st-bar"><div class="st-fill" style="width:74%"></div></div></div></div>
-        <div class="skill-logo-item"><button class="skill-logo-btn">🔌</button><div class="skill-tooltip"><span class="st-name">WebSocket</span><span class="st-level">Intermediate</span><div class="st-bar"><div class="st-fill" style="width:75%"></div></div></div></div>
-        <div class="skill-logo-item"><button class="skill-logo-btn">🟩</button><div class="skill-tooltip"><span class="st-name">Node.js</span><span class="st-level">Intermediate</span><div class="st-bar"><div class="st-fill" style="width:70%"></div></div></div></div>
-      </div>
-    </div>
-
-    <!-- Frontend & Tools -->
-    <div class="skills-logo-section reveal d3">
-      <h3>Frontend & Tools</h3>
-      <div class="skill-bubble-grid">
-        <div class="skill-logo-item"><button class="skill-logo-btn">⚛️</button><div class="skill-tooltip"><span class="st-name">React</span><span class="st-level">Basic</span><div class="st-bar"><div class="st-fill" style="width:60%"></div></div></div></div>
-        <div class="skill-logo-item"><button class="skill-logo-btn">▲</button><div class="skill-tooltip"><span class="st-name">Next.js</span><span class="st-level">Intermediate</span><div class="st-bar"><div class="st-fill" style="width:70%"></div></div></div></div>
-        <div class="skill-logo-item"><button class="skill-logo-btn">🐙</button><div class="skill-tooltip"><span class="st-name">GitHub</span><span class="st-level">Intermediate</span><div class="st-bar"><div class="st-fill" style="width:78%"></div></div></div></div>
-        <div class="skill-logo-item"><button class="skill-logo-btn">🎨</button><div class="skill-tooltip"><span class="st-name">Canva</span><span class="st-level">Proficient</span><div class="st-bar"><div class="st-fill" style="width:88%"></div></div></div></div>
-        <div class="skill-logo-item"><button class="skill-logo-btn">📋</button><div class="skill-tooltip"><span class="st-name">Notion</span><span class="st-level">Proficient</span><div class="st-bar"><div class="st-fill" style="width:90%"></div></div></div></div>
-        <div class="skill-logo-item"><button class="skill-logo-btn">📡</button><div class="skill-tooltip"><span class="st-name">ESP32</span><span class="st-level">Intermediate</span><div class="st-bar"><div class="st-fill" style="width:72%"></div></div></div></div>
-        <div class="skill-logo-item"><button class="skill-logo-btn">💻</button><div class="skill-tooltip"><span class="st-name">VS Code</span><span class="st-level">Proficient</span><div class="st-bar"><div class="st-fill" style="width:92%"></div></div></div></div>
-        <div class="skill-logo-item"><button class="skill-logo-btn">🗂️</button><div class="skill-tooltip"><span class="st-name">XAMPP</span><span class="st-level">Intermediate</span><div class="st-bar"><div class="st-fill" style="width:72%"></div></div></div></div>
-      </div>
-    </div>
-
-    <!-- Languages -->
-    <div class="skills-logo-section reveal d4">
-      <h3>Languages</h3>
-      <div class="skill-bubble-grid">
-        <div class="skill-logo-item"><button class="skill-logo-btn">🇮🇩</button><div class="skill-tooltip"><span class="st-name">Bahasa Indonesia</span><span class="st-level">Native · UKBI 653</span><div class="st-bar"><div class="st-fill" style="width:100%"></div></div></div></div>
-        <div class="skill-logo-item"><button class="skill-logo-btn">🇬🇧</button><div class="skill-tooltip"><span class="st-name">English</span><span class="st-level">Intermediate</span><div class="st-bar"><div class="st-fill" style="width:70%"></div></div></div></div>
-        <div class="skill-logo-item"><button class="skill-logo-btn">🕌</button><div class="skill-tooltip"><span class="st-name">Arabic</span><span class="st-level">Basic</span><div class="st-bar"><div class="st-fill" style="width:35%"></div></div></div></div>
-      </div>
-    </div>
-
   </div>
 </section>
 
@@ -1028,7 +785,7 @@ footer{background:#0a0514;padding:3.5rem 4rem}
     <div class="reveal" style="text-align:center">
       <div class="section-tag">Portfolio</div>
       <h2 class="section-title">Selected <span class="g">Projects</span></h2>
-      <p class="section-sub" style="max-width:560px;margin:0 auto">A selection of 10+ IT projects spanning AI development, robotics, and web engineering.</p>
+      <p class="section-sub" style="max-width:560px;margin:0 auto 3rem">A selection of 10+ IT projects spanning AI development, robotics, and web engineering.</p>
     </div>
     <div class="filter-wrap reveal">
       <button class="f-tab active" onclick="filterProj('all',this)">All Projects</button>
@@ -1038,28 +795,28 @@ footer{background:#0a0514;padding:3.5rem 4rem}
       <button class="f-tab" onclick="filterProj('web',this)">🌐 Web</button>
     </div>
     <div class="proj-grid" id="projGrid">
-      <div class="proj-card" data-cat="iot" onclick="openModal(this)" data-title="Automatic Patrol Robot" data-emoji="🤖" data-grad="#fce7f3,#ede9fe" data-desc="Built an autonomous mobile robot using ESP32 and IR line tracking, integrated with computer vision (YOLO, RT-DETR) for real-time hand detection and touchless sanitizer activation. Achieved up to 99.5% mAP@50 accuracy through model optimisation with pre-processing and augmentation pipelines." data-tags="ESP32,YOLO,RT-DETR,OpenCV,IR Line Tracking" data-award="🥈 WICE 2025 — Silver Medal">
+      <div class="proj-card pre-anim" data-cat="iot" onclick="openModal(this)" data-title="Automatic Patrol Robot" data-emoji="🤖" data-grad="#fce7f3,#ede9fe" data-desc="Built an autonomous mobile robot using ESP32 and IR line tracking, integrated with computer vision (YOLO, RT-DETR) for real-time hand detection and touchless sanitizer activation. Achieved up to 99.5% mAP@50 accuracy through model optimisation with pre-processing and augmentation pipelines." data-tags="ESP32,YOLO,RT-DETR,OpenCV,IR Line Tracking" data-award="🥈 WICE 2025 — Silver Medal">
         <div class="proj-thumb" style="background:linear-gradient(135deg,#fce7f3,#ede9fe)"><img src="wice2.png" alt="Automatic Patrol Robot"><div class="proj-overlay"><a class="pob pob-gh" onclick="event.stopPropagation()">GitHub ↗</a><a class="pob pob-live" onclick="event.stopPropagation()">Demo ↗</a></div><span class="proj-award">🥈 WICE 2025</span></div>
         <div class="proj-info"><div class="proj-title">Automatic Patrol Robot</div><div class="proj-desc">Autonomous hygiene robot using ESP32 + YOLO for real-time hand detection and touchless sanitizer activation. 99.5% mAP@50.</div><div class="tech-wrap"><span class="tech-tag">ESP32</span><span class="tech-tag">YOLO</span><span class="tech-tag">RT-DETR</span><span class="tech-tag">OpenCV</span></div></div>
       </div>
-      <div class="proj-card" data-cat="nlp" onclick="openModal(this)" data-title="NutriBot" data-emoji="🥗" data-grad="#d1fae5,#dbeafe" data-desc="Developed an AI-powered nutrition assistant with Next.js and Flask, powered by local LLMs (LLaMA 3.2 & Qwen 2.5) for meal planning and chat interaction. Designed an NLP pipeline covering data retrieval, summarisation, and structured JSON dashboard output with built-in response validation." data-tags="Next.js,Flask,LLaMA 3.2,Qwen 2.5,NLP">
+      <div class="proj-card pre-anim" data-cat="nlp" onclick="openModal(this)" data-title="NutriBot" data-emoji="🥗" data-grad="#d1fae5,#dbeafe" data-desc="Developed an AI-powered nutrition assistant with Next.js and Flask, powered by local LLMs (LLaMA 3.2 & Qwen 2.5) for meal planning and chat interaction. Designed an NLP pipeline covering data retrieval, summarisation, and structured JSON dashboard output with built-in response validation." data-tags="Next.js,Flask,LLaMA 3.2,Qwen 2.5,NLP">
         <div class="proj-thumb" style="background:linear-gradient(135deg,#d1fae5,#dbeafe)">🥗<div class="proj-overlay"><a class="pob pob-gh" onclick="event.stopPropagation()">GitHub ↗</a><a class="pob pob-live" onclick="event.stopPropagation()">Demo ↗</a></div></div>
         <div class="proj-info"><div class="proj-title">NutriBot</div><div class="proj-desc">AI nutrition assistant with Next.js & Flask, powered by local LLMs (LLaMA 3.2 & Qwen 2.5) for meal planning and chat interaction.</div><div class="tech-wrap"><span class="tech-tag">Next.js</span><span class="tech-tag">Flask</span><span class="tech-tag">LLaMA 3.2</span><span class="tech-tag">Qwen 2.5</span></div></div>
       </div>
-      <div class="proj-card" data-cat="ai" onclick="openModal(this)" data-title="PubSpeak" data-emoji="🎤" data-grad="#fef3c7,#fce7f3" data-desc="Built a real-time AI public speaking coach using MediaPipe and OpenCV to track facial landmarks and measure metrics such as eye contact and gesture frequency. Delivered live feedback via a low-latency FastAPI backend with WebSocket integration for live video stream processing." data-tags="MediaPipe,OpenCV,FastAPI,WebSocket,Python">
+      <div class="proj-card pre-anim" data-cat="ai" onclick="openModal(this)" data-title="PubSpeak" data-emoji="🎤" data-grad="#fef3c7,#fce7f3" data-desc="Built a real-time AI public speaking coach using MediaPipe and OpenCV to track facial landmarks and measure metrics such as eye contact and gesture frequency. Delivered live feedback via a low-latency FastAPI backend with WebSocket integration for live video stream processing." data-tags="MediaPipe,OpenCV,FastAPI,WebSocket,Python">
         <div class="proj-thumb" style="background:linear-gradient(135deg,#fef3c7,#fce7f3)">🎤<div class="proj-overlay"><a class="pob pob-gh" onclick="event.stopPropagation()">GitHub ↗</a><a class="pob pob-live" onclick="event.stopPropagation()">Demo ↗</a></div></div>
         <div class="proj-info"><div class="proj-title">PubSpeak</div><div class="proj-desc">Real-time AI speaking coach using MediaPipe & OpenCV to measure eye contact, gesture frequency, and deliver live feedback.</div><div class="tech-wrap"><span class="tech-tag">MediaPipe</span><span class="tech-tag">OpenCV</span><span class="tech-tag">FastAPI</span><span class="tech-tag">WebSocket</span></div></div>
       </div>
-      <div class="proj-card" data-cat="web" onclick="openModal(this)" data-title="PixCraft-IP" data-emoji="🖼️" data-grad="#ede9fe,#dbeafe" data-desc="Developed a web-based image editing platform integrating Stability AI for inpainting and Cloudinary for super-resolution via a Node.js backend. Implemented client-side image processing features including edge detection (Sobel/Prewitt) and custom colour filters using Fabric.js." data-tags="Node.js,Stability AI,Cloudinary,Fabric.js,OpenCV">
+      <div class="proj-card pre-anim" data-cat="web" onclick="openModal(this)" data-title="PixCraft-IP" data-emoji="🖼️" data-grad="#ede9fe,#dbeafe" data-desc="Developed a web-based image editing platform integrating Stability AI for inpainting and Cloudinary for super-resolution via a Node.js backend. Implemented client-side image processing features including edge detection (Sobel/Prewitt) and custom colour filters using Fabric.js." data-tags="Node.js,Stability AI,Cloudinary,Fabric.js,OpenCV">
         <div class="proj-thumb" style="background:linear-gradient(135deg,#ede9fe,#dbeafe)">🖼️<div class="proj-overlay"><a class="pob pob-gh" onclick="event.stopPropagation()">GitHub ↗</a><a class="pob pob-live" onclick="event.stopPropagation()">Demo ↗</a></div></div>
         <div class="proj-info"><div class="proj-title">PixCraft-IP</div><div class="proj-desc">Web image editing platform with Stability AI inpainting, Cloudinary super-resolution, and Sobel/Prewitt edge detection.</div><div class="tech-wrap"><span class="tech-tag">Node.js</span><span class="tech-tag">Stability AI</span><span class="tech-tag">Cloudinary</span><span class="tech-tag">Fabric.js</span></div></div>
       </div>
-      <div class="proj-card" data-cat="ai" onclick="openModal(this)" data-title="Kcal Calculator" data-emoji="🍱" data-grad="#d1fae5,#a7f3d0" data-desc="Integrated a React frontend with a hybrid Flask & FastAPI backend to support both static and live image-based calorie analysis. Implemented WebSocket protocols for real-time YOLO inference and resolved cross-module interoperability issues for stable data transmission." data-tags="React,Flask,FastAPI,YOLO,WebSocket">
+      <div class="proj-card pre-anim" data-cat="ai" onclick="openModal(this)" data-title="Kcal Calculator" data-emoji="🍱" data-grad="#d1fae5,#a7f3d0" data-desc="Integrated a React frontend with a hybrid Flask & FastAPI backend to support both static and live image-based calorie analysis. Implemented WebSocket protocols for real-time YOLO inference and resolved cross-module interoperability issues for stable data transmission." data-tags="React,Flask,FastAPI,YOLO,WebSocket">
         <div class="proj-thumb" style="background:linear-gradient(135deg,#d1fae5,#a7f3d0)">🍱<div class="proj-overlay"><a class="pob pob-gh" onclick="event.stopPropagation()">GitHub ↗</a><a class="pob pob-live" onclick="event.stopPropagation()">Demo ↗</a></div></div>
         <div class="proj-info"><div class="proj-title">Kcal Calculator</div><div class="proj-desc">Live and static calorie analysis using YOLO inference, with hybrid Flask & FastAPI backend and WebSocket streaming.</div><div class="tech-wrap"><span class="tech-tag">React</span><span class="tech-tag">Flask</span><span class="tech-tag">FastAPI</span><span class="tech-tag">YOLO</span></div></div>
       </div>
-      <div class="proj-card" data-cat="web" onclick="openModal(this)" data-title="PresLingo" data-emoji="📖" data-grad="#fff1f2,#fce7f3" data-desc="Contributed to building a web-based Mandarin learning platform with structured modules, virtual classes, and interactive exercises targeting Indonesian learners. Led content creation and collaborated with the development team on UI design to support learners across different proficiency levels." data-tags="Web Platform,UI Design,Content Creation,Mandarin Learning">
-        <div class="proj-thumb" style="background:linear-gradient(135deg,#fff1f2,#fce7f3)">📖<div class="proj-overlay"><a class="pob pob-gh" onclick="event.stopPropagation()">GitHub ↗</a><a class="pob pob-live" onclick="event.stopPropagation()">Demo ↗</a></div></div>
+      <div class="proj-card pre-anim" data-cat="web" onclick="openModal(this)" data-title="PresLingo" data-emoji="📖" data-grad="#fff1f2,#fce7f3" data-desc="Contributed to building a web-based Mandarin learning platform with structured modules, virtual classes, and interactive exercises targeting Indonesian learners. Led content creation and collaborated with the development team on UI design to support learners across different proficiency levels." data-tags="Web Platform,UI Design,Content Creation,Mandarin Learning">
+        <div class="proj-thumb" style="background:linear-gradient(135deg,#fff1f2,#fce7f3)"><img src="preslingo.png" alt="Preslingo Web"><div class="proj-overlay"><a href="https://github.com/keyy9/PresLingo-update" class="pob pob-gh" onclick="event.stopPropagation()">GitHub ↗</a><a class="pob pob-live" onclick="event.stopPropagation()">Demo ↗</a></div></div>
         <div class="proj-info"><div class="proj-title">PresLingo</div><div class="proj-desc">Web-based Mandarin learning platform with structured modules, virtual classes, and interactive exercises for Indonesian learners.</div><div class="tech-wrap"><span class="tech-tag">Web Platform</span><span class="tech-tag">UI Design</span><span class="tech-tag">Content Creation</span></div></div>
       </div>
     </div>
@@ -1184,7 +941,10 @@ footer{background:#0a0514;padding:3.5rem 4rem}
       <h2 class="section-title">Recent <span class="g">Activities</span></h2>
       <p class="section-sub" style="max-width:700px;margin:0 auto">From company visits and seminars to volunteering, a glimpse of what I've been up to lately.</p>
     </div>
-    <div class="testi-grid" style="margin-top: 1.3rem;">
+    <div class="testi-carousel-wrap reveal" style="margin-top:1.3rem">
+      <button class="testi-nav prev" id="testiPrev" onclick="testiScroll(-1)" aria-label="Previous">‹</button>
+      <button class="testi-nav next" id="testiNext" onclick="testiScroll(1)" aria-label="Next">›</button>
+      <div class="testi-grid" id="testiGrid">
 
       <div class="testi-card reveal">
         <div class="act-thumb" style="background:linear-gradient(135deg,#dbeafe,#ede9fe)">
@@ -1264,7 +1024,76 @@ footer{background:#0a0514;padding:3.5rem 4rem}
           <p class="act-desc">Awarded the Beasiswa Unggulan national scholarship for academic merit. Also helped coordinate the 2025 recruitment cycle, guiding prospective applicants through Stage 1 submissions.</p>
         </div>
       </div>    
-      
+
+      <!-- ── 4 more placeholder cards left — replace title/org/date/desc/image/tag with real details ── -->
+      <div class="testi-card reveal">
+        <div class="act-thumb" style="background:linear-gradient(135deg,#dbeafe,#93c5fd)">
+          <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:2.8rem;opacity:.5">🚗</span>
+          <img src="astra-meetup.jpg" alt="Astra Career Meet Up Jakarta 2026" onerror="this.style.display='none'">
+          <span class="act-tag" style="background:rgba(29,78,216,.85);color:#fff">Career Fair</span>
+        </div>
+        <div class="act-body">
+          <div class="act-date">19 September 2026</div>
+          <div class="act-title">Astra Career Meet Up Jakarta 2026</div>
+          <div class="act-org">Astra Management Development Institute, Jakarta Utara</div>
+          <p class="act-desc">Selected to attend Astra's career preparation event with the theme "Explore, Prepare, Connect, Grow" — joined sharing sessions, an inspiring talkshow, and an interactive workshop to learn more about Astra's work environment and career-building.</p>
+        </div>
+      </div>
+
+      <div class="testi-card reveal d1">
+        <div class="act-thumb" style="background:linear-gradient(135deg,#a7f3d0,#93c5fd)">
+          <img src="activity8.jpg" alt="Activity title here" onerror="this.style.display='none'">
+          <span class="act-tag" style="background:rgba(5,150,105,.85);color:#fff">Category</span>
+        </div>
+        <div class="act-body">
+          <div class="act-date">Date / Year</div>
+          <div class="act-title">Activity Title Here</div>
+          <div class="act-org">Organisation / Location</div>
+          <p class="act-desc">Short description of what happened and what you did — replace this placeholder text with the real details.</p>
+        </div>
+      </div>
+
+      <div class="testi-card reveal d2">
+        <div class="act-thumb" style="background:linear-gradient(135deg,#c4b5fd,#f9a8d4)">
+          <img src="activity9.jpg" alt="Activity title here" onerror="this.style.display='none'">
+          <span class="act-tag" style="background:rgba(124,58,237,.85);color:#fff">Category</span>
+        </div>
+        <div class="act-body">
+          <div class="act-date">Date / Year</div>
+          <div class="act-title">Activity Title Here</div>
+          <div class="act-org">Organisation / Location</div>
+          <p class="act-desc">Short description of what happened and what you did — replace this placeholder text with the real details.</p>
+        </div>
+      </div>
+
+      <div class="testi-card reveal d3">
+        <div class="act-thumb" style="background:linear-gradient(135deg,#fbcfe8,#bfdbfe)">
+          <img src="activity10.jpg" alt="Activity title here" onerror="this.style.display='none'">
+          <span class="act-tag" style="background:rgba(219,39,119,.85);color:#fff">Category</span>
+        </div>
+        <div class="act-body">
+          <div class="act-date">Date / Year</div>
+          <div class="act-title">Activity Title Here</div>
+          <div class="act-org">Organisation / Location</div>
+          <p class="act-desc">Short description of what happened and what you did — replace this placeholder text with the real details.</p>
+        </div>
+      </div>
+
+      <div class="testi-card reveal d4">
+        <div class="act-thumb" style="background:linear-gradient(135deg,#fde68a,#a7f3d0)">
+          <img src="activity11.jpg" alt="Activity title here" onerror="this.style.display='none'">
+          <span class="act-tag" style="background:rgba(21,128,61,.85);color:#fff">Category</span>
+        </div>
+        <div class="act-body">
+          <div class="act-date">Date / Year</div>
+          <div class="act-title">Activity Title Here</div>
+          <div class="act-org">Organisation / Location</div>
+          <p class="act-desc">Short description of what happened and what you did — replace this placeholder text with the real details.</p>
+        </div>
+      </div>
+
+      </div>
+      <div class="testi-dots" id="testiDots"></div>
     </div>
   </div>
 </section>
@@ -1280,8 +1109,10 @@ footer{background:#0a0514;padding:3.5rem 4rem}
         <div class="social-row">
           <a href="https://www.linkedin.com/in/cutkheysa" target="_blank" class="soc-btn" title="LinkedIn" onclick="showToast('Opening LinkedIn…','#2563eb')">💼</a>
           <a href="mailto:cutkheysa.id@gmail.com" class="soc-btn" title="Email" onclick="showToast('Opening Email…','#e879a6')">✉️</a>
-          <a href="#" class="soc-btn" title="GitHub" onclick="showToast('Opening GitHub…','#6b7280')">🐙</a>
+          <a href="https://github.com/keyy9/" class="soc-btn" title="GitHub" onclick="showToast('Opening GitHub…','#6b7280')">🐙</a>
           <a href="#" class="soc-btn" title="Instagram" onclick="showToast('Opening Instagram…','#e879a6')">📸</a>
+          <a href="https://drive.google.com/file/d/1i9UrmLv2k8OoLAOuoeVyAFC-aSAcVQv3/view?usp=sharing" target="_blank" class="soc-btn" title="Download CV" onclick="showToast('Opening CV on Google Drive…','#e879a6')">📄</a>
+          <a href="https://drive.google.com/file/d/1J0gu4wYxR8lS3YuGLrt-Y09L-8KvtS8Y/view?usp=sharing" target="_blank" class="soc-btn" title="View Portfolio (PPT)" onclick="showToast('Opening Portfolio (PPT)…','#8b5cf6')">📊</a>
         </div>
         <div class="loc-card">
           <div style="display:flex;align-items:center;gap:.8rem;margin-bottom:.4rem">
@@ -1315,7 +1146,7 @@ footer{background:#0a0514;padding:3.5rem 4rem}
     <div class="footer-divider"></div>
     <div class="footer-row">
       <div><div class="footer-logo">Cut Kheysa Sakbania</div><div class="footer-sub">AI Engineer · Informatics Student · Robotics Enthusiast</div></div>
-      <p class="footer-copy">© 2025 · Crafted with <span class="fheart">♥</span> and lots of ☕</p>
+      <p class="footer-copy">© <span id="footYear">2025</span> · Crafted with <span class="fheart">♥</span> and lots of ☕</p>
       <div class="footer-links"><a href="https://www.linkedin.com/in/cutkheysa" target="_blank">LinkedIn</a><a href="mailto:cutkheysa.id@gmail.com">Email</a><a href="#">GitHub</a></div>
     </div>
   </div>
@@ -1328,7 +1159,7 @@ let mx=0,my=0,tx=0,ty=0;
 document.addEventListener('mousemove',e=>{
   mx=e.clientX;my=e.clientY;
   cur.style.left=(mx-11)+'px';cur.style.top=(my-11)+'px';
-  cur.classList.toggle('hov',!!e.target.closest('a,button,.f-tab,.proj-card,.soc-btn,.sk-card,.tl-card,.ibadge,.cert-card,.testi-card,.qbtn,.skill-logo-btn'));
+  cur.classList.toggle('hov',!!e.target.closest('a,button,.f-tab,.proj-card,.soc-btn,.sk-card,.tl-card,.ibadge,.cert-card,.testi-card,.qbtn,.skill-pill'));
 });
 setInterval(()=>{tx+=(mx-tx)*.13;ty+=(my-ty)*.13;trail.style.left=(tx-4.5)+'px';trail.style.top=(ty-4.5)+'px';},16);
 
@@ -1378,31 +1209,64 @@ function showToast(msg,color='#e879a6'){
   setTimeout(()=>{t.classList.replace('show','hide');setTimeout(()=>t.remove(),450);},2800);
 }
 
+/* ─── ACTIVITIES CAROUSEL ─── */
+const testiGrid=document.getElementById('testiGrid'),testiPrev=document.getElementById('testiPrev'),testiNext=document.getElementById('testiNext'),testiDotsWrap=document.getElementById('testiDots');
+if(testiGrid){
+  const testiCards=[...testiGrid.querySelectorAll('.testi-card')];
+  testiCards.forEach((c,i)=>{
+    const d=document.createElement('span');d.className='testi-dot'+(i===0?' active':'');
+    d.onclick=()=>testiGrid.scrollTo({left:c.offsetLeft-testiGrid.offsetLeft,behavior:'smooth'});
+    testiDotsWrap.appendChild(d);
+  });
+  const testiDots=[...testiDotsWrap.querySelectorAll('.testi-dot')];
+  function testiUpdateNav(){
+    const max=testiGrid.scrollWidth-testiGrid.clientWidth-4;
+    testiPrev.disabled=testiGrid.scrollLeft<=4;
+    testiNext.disabled=testiGrid.scrollLeft>=max;
+    let closest=0,closestDist=Infinity;
+    testiCards.forEach((c,i)=>{
+      const dist=Math.abs(c.offsetLeft-testiGrid.offsetLeft-testiGrid.scrollLeft);
+      if(dist<closestDist){closestDist=dist;closest=i;}
+    });
+    testiDots.forEach((d,i)=>d.classList.toggle('active',i===closest));
+  }
+  window.testiScroll=function(dir){
+    const card=testiCards[0];
+    const step=card.getBoundingClientRect().width+parseFloat(getComputedStyle(testiGrid).gap||24);
+    testiGrid.scrollBy({left:dir*step,behavior:'smooth'});
+  };
+  testiGrid.addEventListener('scroll',()=>{clearTimeout(testiGrid._t);testiGrid._t=setTimeout(testiUpdateNav,80);},{passive:true});
+  window.addEventListener('resize',testiUpdateNav);
+  setTimeout(testiUpdateNav,300);
+}
+
 /* ─── REVEAL ─── */
 function checkReveal(){document.querySelectorAll('.reveal').forEach(el=>{if(el.getBoundingClientRect().top<window.innerHeight*.9)el.classList.add('vis');});}
 setTimeout(checkReveal,80);
 
 /* ─── COUNTERS ─── */
-let countersDone=false;
+function animateCounter(el){
+  const target=+el.dataset.count,suffix=el.dataset.suffix||'',gpa=el.dataset.gpa;
+  let startTime=null;
+  function step(ts){
+    if(!startTime)startTime=ts;
+    const prog=Math.min((ts-startTime)/1600,1);
+    const ease=1-Math.pow(1-prog,4);
+    const val=Math.round(ease*target);
+    el.textContent=gpa?(val/100).toFixed(2):val+suffix;
+    if(prog<1)requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
 function checkCounters(){
-  if(countersDone)return;
-  const sec=document.getElementById('counters');
-  if(!sec||sec.getBoundingClientRect().top>window.innerHeight*.88)return;
-  countersDone=true;
-  document.querySelectorAll('[data-count]').forEach(el=>{
-    const target=+el.dataset.count,suffix=el.dataset.suffix||'',gpa=el.dataset.gpa;
-    let startTime=null;
-    function step(ts){
-      if(!startTime)startTime=ts;
-      const prog=Math.min((ts-startTime)/1600,1);
-      const ease=1-Math.pow(1-prog,4);
-      const val=Math.round(ease*target);
-      el.textContent=gpa?(val/100).toFixed(2):val+suffix;
-      if(prog<1)requestAnimationFrame(step);
-    }
-    requestAnimationFrame(step);
+  document.querySelectorAll('[data-count]:not(.counted)').forEach(el=>{
+    if(el.getBoundingClientRect().top>window.innerHeight*.9)return;
+    el.classList.add('counted');
+    animateCounter(el);
   });
 }
+checkCounters();
+document.getElementById('footYear').textContent=new Date().getFullYear();
 
 /* ─── TYPEWRITER ─── */
 const roles=["AI & Machine Learning Engineer","Computer Vision Specialist","NLP & LLM Developer","Robotics Systems Builder","Informatics Student at President University"];
@@ -1417,56 +1281,48 @@ function type(){
 }
 type();
 
-/* ─── PROJECT FILTER — animated reorder ─── */
+/* ─── PROJECT FILTER — flow-up reveal on load + on filter change ─── */
+const PROJ_STAGGER=70;
+function flowUpCards(cards){
+  // Force a reflow so the browser registers the .pre-anim (hidden) state
+  // before we remove it — otherwise the transition wouldn't play.
+  cards.forEach(c=>{void c.offsetWidth;});
+  cards.forEach((c,i)=>{
+    c.style.transitionDelay=(i*PROJ_STAGGER)+'ms';
+    c.classList.remove('pre-anim');
+  });
+}
 function filterProj(cat,btn){
   document.querySelectorAll('.f-tab').forEach(t=>t.classList.remove('active'));
   btn.classList.add('active');
   const grid=document.getElementById('projGrid');
   const cards=[...grid.querySelectorAll('.proj-card')];
-  // Fade all out first
-  cards.forEach(c=>{c.classList.add('fade-out');c.style.order='';});
+  // Reset every card to the hidden/pre-animation state first
+  cards.forEach(c=>{c.style.transitionDelay='0ms';c.classList.add('pre-anim');c.style.order='';});
   setTimeout(()=>{
+    const visible=[];
     cards.forEach(c=>{
       const match=cat==='all'||c.dataset.cat===cat;
-      c.classList.remove('hidden');
-      if(match){c.style.order='0';c.classList.remove('fade-out');c.classList.add('fade-in');}
-      else{c.style.order='99';c.classList.add('hidden');c.classList.remove('fade-out','fade-in');}
+      if(match){c.style.order='0';c.classList.remove('hidden');visible.push(c);}
+      else{c.style.order='99';c.classList.add('hidden');}
     });
-  },280);
+    flowUpCards(visible);
+  },320);
 }
 
-const counters = document.querySelectorAll('.hs-v');
-
-  counters.forEach(counter => {
-    const target = +counter.getAttribute('data-count');
-    const suffix = counter.getAttribute('data-suffix') || '';
-    const isGpa = counter.getAttribute('data-gpa');
-
-    let count = 0;
-    const increment = target / 50;
-
-    function updateCounter() {
-      if (count < target) {
-        count += increment;
-
-        if (isGpa) {
-          counter.innerText = (count / 100).toFixed(2);
-        } else {
-          counter.innerText = Math.ceil(count) + suffix;
-        }
-
-        requestAnimationFrame(updateCounter);
-      } else {
-        if (isGpa) {
-          counter.innerText = (target / 100).toFixed(2);
-        } else {
-          counter.innerText = target + suffix;
-        }
+/* Initial flow-up reveal when the Projects grid first scrolls into view */
+const projGridEl=document.getElementById('projGrid');
+if(projGridEl){
+  const projObserver=new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        flowUpCards([...projGridEl.querySelectorAll('.proj-card:not(.hidden)')]);
+        projObserver.disconnect();
       }
-    }
-
-    updateCounter();
-  });
+    });
+  },{threshold:.15});
+  projObserver.observe(projGridEl);
+}
 
 /* ─── PROJECT MODAL ─── */
 function openModal(card){
@@ -1638,4 +1494,3 @@ document.getElementById('chat-input').addEventListener('keydown',e=>{if(e.key===
 </script>
 </body>
 </html>
-<!-- redeploy -->
